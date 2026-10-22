@@ -1,0 +1,36 @@
+# TB-8505X (MT6761, eMMC) - TWRP/OrangeFox fstab
+# Partition names and paths taken from the stock fstab.mt6761 and scatter file.
+# <mount point>  <fs>   <device>                                              <flags>
+
+# Images
+/boot            emmc   /dev/block/platform/bootdevice/by-name/boot          flags=display="Boot";backup=1;flashimg=1
+/recovery        emmc   /dev/block/platform/bootdevice/by-name/recovery      flags=display="Recovery";backup=1;flashimg=1
+/dtbo            emmc   /dev/block/platform/bootdevice/by-name/dtbo          flags=display="DTBO";backup=1;flashimg=1
+/vbmeta          emmc   /dev/block/platform/bootdevice/by-name/vbmeta        flags=display="VBMeta";backup=1;flashimg=1
+/logo            emmc   /dev/block/platform/bootdevice/by-name/logo          flags=display="Boot logo";backup=1;flashimg=1
+/lk              emmc   /dev/block/platform/bootdevice/by-name/lk            flags=display="LK";backup=1
+/lk2             emmc   /dev/block/platform/bootdevice/by-name/lk2           flags=display="LK2";backup=1
+/misc            emmc   /dev/block/platform/bootdevice/by-name/para
+
+# System (Android 10 = system-as-root layout image)
+/system_root     ext4   /dev/block/platform/bootdevice/by-name/system        flags=display="System";backup=1;wipeingui
+/system_image    emmc   /dev/block/platform/bootdevice/by-name/system        flags=display="System Image";backup=1;flashimg=1
+/vendor          ext4   /dev/block/platform/bootdevice/by-name/vendor        flags=display="Vendor";backup=1;wipeingui
+/vendor_image    emmc   /dev/block/platform/bootdevice/by-name/vendor        flags=display="Vendor Image";backup=1;flashimg=1
+
+# Data / cache (stock: FDE, crypto key stored in the raw "metadata" partition)
+/data            ext4   /dev/block/platform/bootdevice/by-name/userdata      flags=encryptable=/dev/block/platform/bootdevice/by-name/metadata
+/cache           ext4   /dev/block/platform/bootdevice/by-name/cache         flags=display="Cache"
+
+# IMEI / calibration - BACK THESE UP before flashing anything else (LTE model)
+/nvram           emmc   /dev/block/platform/bootdevice/by-name/nvram         flags=display="NVRAM";backup=1
+/nvdata          ext4   /dev/block/platform/bootdevice/by-name/nvdata        flags=display="NVDATA";backup=1
+/nvcfg           ext4   /dev/block/platform/bootdevice/by-name/nvcfg         flags=display="NVCFG";backup=1
+/protect_f       ext4   /dev/block/platform/bootdevice/by-name/protect1      flags=display="Protect_f";backup=1
+/protect_s       ext4   /dev/block/platform/bootdevice/by-name/protect2      flags=display="Protect_s";backup=1
+/persist         ext4   /dev/block/platform/bootdevice/by-name/persist       flags=display="Persist";backup=1
+/proinfo         emmc   /dev/block/platform/bootdevice/by-name/proinfo       flags=display="Proinfo";backup=1
+
+# Removable storage
+/external_sd     vfat   /dev/block/mmcblk1p1   /dev/block/mmcblk1            flags=display="MicroSD";storage;wipeingui;removable;fsflags=utf8
+/usb_otg         vfat   /dev/block/sda1        /dev/block/sda                flags=display="USB OTG";storage;wipeingui;removable
